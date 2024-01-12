@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sum Function Practice</title>
+</head>
+<body>
+
+<h1>Sum Function Practice</h1>
+
+<!-- Result will be displayed here -->
+<p id="result"></p>
+
+<!-- JavaScript script section -->
+<script>
+    // Function to add two numbers
+    function addNumbers(number1, number2) {
+        return number1 + number2;
+    }
+
+    // Call the function with specific arguments
+    var result = addNumbers(23, 8);
+
+    // Display the result in the HTML
+    var resultElement = document.getElementById('result');
+    resultElement.textContent = 'The result of these two numbers is: ' + result;
+</script>
+
+</body>
+</html>
