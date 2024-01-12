@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthony's Webpage</title>
+    <style>
+        /* Add your custom styles here */
+        button {
+            margin-top: 40px; /* Adjust the top margin as needed */
+            margin-left: 10px; /* Adjust the left margin as needed */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Nature's Finest</h1>
+    <p>This is a webpage where you can look at nice photos...that's it.</p>
+</header>
+
+<section>
+    <h2>Frozen Bliss</h2>
+    <p id="switch">This is an image of a frozen lake that contains air bubbles that have been suspended in ice. Cool, huh?.</p>
+    <button type="button" onclick='document.getElementById("switch").innerHTML = "Boo!!"'>Click Here</button>
+    <img src="https://static.boredpanda.com/blog/wp-content/uploads/2017/02/Unbelievable-Not-Photoshopped-Photos-Real-61-58b0326e202f5__700.jpg" alt="Image 1" width="400" height="300">
+</section>
+
+<section>
+    <h2>Mr. Rainbow Sky</h2>
+    <p id="swap">This is a beautiful photo of what appears to be a sunrise splashed with vibrant colors.</p>
+    <button type="button" onclick='document.getElementById("swap").innerHTML = "Bleh!!"'>Click Here</button>
+    <img src="https://i.pinimg.com/originals/49/2a/74/492a74d5e9a6afed3a8fd4da12f97daf.jpg" alt="Image 2" width="400" height="400">
+</section>
+
+<footer>
+    <p>&copy; 2024 Your Name. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
