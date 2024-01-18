@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        /* Styles for the page layout and elements */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #027ba8;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 2em auto;
+            padding: 1em;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1em;
+        }
+
+        input[type="text"] {
+            flex-grow: 2;
+            padding: 0.5em;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 0.5em 1em;
+            border: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-height: 300px; /* Set a maximum height for the task list */
+            overflow-y: auto; /* Enable vertical scroll if tasks exceed the height */
+        }
+
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .edit-mode {
+            border: 1px solid #027ba8;
+            padding: 0.5em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Todo List</h1>
+</header>
+
+<main>
+    <!-- Form for adding new tasks -->
+    <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Add new tasks here" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Task list container -->
+    <ul id="taskList"></ul>
+</main>
+
+<script>
+    // JavaScript logic for task management
+    const taskForm = document.getElementById('taskForm');
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+
+    // Load tasks from local storage on page load
+    window.addEventListener('load', function () {
+        loadTasks();
+    });
+
+    // Event listener for the form submission
+    taskForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Get the trimmed task text from the input
+        const taskText = taskInput.value.trim();
+
+        if (taskText !== '') {
+            // Create a new list item with task text
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = taskText;
+
+            // Create "Edit" button
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', function () {
+                // Toggle edit mode for the task
+                li.classList.toggle('edit-mode');
+                span.contentEditable = !span.isContentEditable;
+                span.focus();
+            });
+
+            // Create "Delete" button
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', function () {
+                // Remove the task when delete button is clicked
+                taskList.removeChild(li);
+                saveTasks(); // Save tasks after deletion
+            });
+
+            // Append elements to the list item
+            li.appendChild(span);
+            li.appendChild(editButton);
+            li.appendChild(deleteButton);
+
+            // Append the list item to the task list
+            taskList.appendChild(li);
+
+            // Save tasks to local storage
+            saveTasks();
+
+            // Clear the input field
+            taskInput.value = '';
+        }
+    });
+
+    // Event listener for real-time editing of tasks
+    taskList.addEventListener('keydown', function (event) {
+        const target = event.target;
+
+        // Check if the target is a span inside a list item in edit mode
+        if (event.key === 'Enter' && target.tagName === 'SPAN' && target.parentElement.classList.contains('edit-mode')) {
+            event.preventDefault(); // Prevent adding new lines on Enter key
+            const newText = target.textContent.trim();
+            if (newText !== '') {
+                // Disable edit mode when Enter is pressed
+                target.parentElement.classList.remove('edit-mode');
+                target.contentEditable = false;
+                saveTasks(); // Save tasks after editing
+            }
+        }
+    });
+
+    // Function to save tasks to local storage
+    function saveTasks() {
+        const tasks = [];
+        const taskElements = document.querySelectorAll('#taskList li span');
+        taskElements.forEach((taskElement) => {
+            tasks.push(taskElement.textContent);
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    // Function to load tasks from local storage
+    function loadTasks() {
+        const savedTasks = localStorage.getItem('tasks');
+        if (savedTasks) {
+            const tasks = JSON.parse(savedTasks);
+            tasks.forEach((taskText) => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.textContent = taskText;
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.addEventListener('click', function () {
+                    li.classList.toggle('edit-mode');
+                    span.contentEditable = !span.isContentEditable;
+                    span.focus();
+                });
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    taskList.removeChild(li);
+                    saveTasks();
+                });
+
+                li.appendChild(span);
+                li.appendChild(editButton);
+                li.appendChild(deleteButton);
+                taskList.appendChild(li);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
